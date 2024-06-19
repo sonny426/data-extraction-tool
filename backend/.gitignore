@@ -87,3 +87,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 .dmypy.json
+
+# upload
+media/
+media/pdf_files/
+media/pdf_files/*

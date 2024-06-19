@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'core.user',
     'core.auth',
     'core.film',
+    'core.pdf',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50,
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_ORIGIN_ALLOW_ALL = True
 

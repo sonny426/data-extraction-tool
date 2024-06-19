@@ -5,6 +5,7 @@ import Navbar from './components/layouts/navbar'
 import Home from "./pages/Home";
 import Films from "./pages/Films/Films";
 import Film from "./pages/Films/Film";
+import PDFs from "./pages/PDFs/PDFs";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/films" element={<Films />} />
         <Route path="/films/:id" element={<Film />} />
+        <Route path="/pdfs/" element={<PDFs />} />
       </Routes>
     </>
   );

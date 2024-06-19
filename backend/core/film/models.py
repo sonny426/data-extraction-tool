@@ -16,7 +16,7 @@ class Film(AbstractModel):
     link = models.CharField(max_length=255, default='')
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.link}"
 
     class Meta:
         db_table = "films"

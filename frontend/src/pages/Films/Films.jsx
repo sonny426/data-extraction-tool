@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Space, Upload, Table } from "antd";
+import { Table } from "antd";
 import moment from "moment";
 
 import axios from "../../utils/axios";
@@ -53,7 +52,7 @@ const columns = [
     title: "MODIFIED AT",
     dataIndex: "modified_at",
     key: "modified_at",
-    render: (text) => moment(text).format("MM-DD-YYYY"),
+    render: (text) => (text === null ? "" : moment(text).format("MM-DD-YYYY")),
   },
   {
     title: "SEASON",
@@ -102,16 +101,12 @@ export default function Films() {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="text-right mb-3">
-        <Upload
-          action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-          listType="picture"
-          maxCount={1}
-        >
-          <Button icon={<UploadOutlined />}>Upload PDF</Button>
-        </Upload>
-      </div>
-      <Table loading={loading} columns={columns} dataSource={films} />
+      <Table
+        loading={loading}
+        columns={columns}
+        dataSource={films}
+        rowKey="id"
+      />
     </div>
   );
 }
