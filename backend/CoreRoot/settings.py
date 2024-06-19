@@ -32,6 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'core_user.User'
 
 # Application definition
 
@@ -44,6 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt',
+
+    'core',
+    'core.user',
+    'core.auth',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +65,15 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATED_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ]
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 
