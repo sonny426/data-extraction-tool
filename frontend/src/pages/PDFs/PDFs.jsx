@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { UploadOutlined, LoadingOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Space,
-  Upload,
-  Table,
-  Modal,
-  Input,
-  notification,
-  Spin,
-} from "antd";
-import moment from "moment";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Button, Table, Modal, Input, notification, Spin } from "antd";
 
 import axios from "../../utils/axios";
 
@@ -116,6 +105,7 @@ export default function Films() {
         loading={loading}
         columns={columns}
         dataSource={pdfs}
+        pagination={false}
         rowKey="title"
       />
       <Modal
