@@ -6,9 +6,9 @@ import {
   ServerStackIcon,
   RectangleStackIcon,
   DocumentIcon,
-  ArrowDownTrayIcon,
+  FilmIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications, PDF, Extract } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications, PDF, Films } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -32,10 +32,10 @@ export const routes = [
         element: <PDF />,
       },
       {
-        icon: <ArrowDownTrayIcon {...icon} />,
-        name: "Data Extract",
-        path: "/extract",
-        element: <Extract />,
+        icon: <FilmIcon {...icon} />,
+        name: "Films",
+        path: "/films",
+        element: <Films />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
