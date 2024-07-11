@@ -79,6 +79,22 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50,
 }
 
+# CELERY settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Use your Redis URL
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+# Celery Beat settings
+CELERY_BEAT_SCHEDULE = {
+    'check-and-update-films-every-10-seconds': {
+        'task': 'core.tasks.check_and_update_films',
+        'schedule': 10.0,  # Run every 10 seconds
+    },
+}
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
