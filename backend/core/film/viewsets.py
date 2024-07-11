@@ -20,9 +20,8 @@ class FilmViewSet(AbstractViewSet):
 
     @action(detail=False, methods=['get'], url_path='need_scrape')
     def get_need_scrape(self, request):
-        films = Film.objects.filter(title='')
-        serializer = self.get_serializer(films, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        count = Film.objects.filter(need_scrape=True).count()
+        return Response({'count': count}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='scrape/<id>')
     def scrape(self, request, *args, **kwargs):

@@ -8,4 +8,4 @@ class FilmSerializer(AbstractSerializer):
 
     class Meta:
         model = Film
-        fields = ['id', 'title', 'studio', 'genre', 'arena', 'modified_at', 'season', 'status', 'link', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'studio', 'genre', 'arena', 'need_scrape', 'modified_at', 'season', 'status', 'link', 'created_at', 'updated_at']

@@ -14,10 +14,13 @@ class PDFSerializer(AbstractSerializer):
 
     class Meta:
         model = PDF
-        fields = ['pdf_file', 'title', 'films']
+        fields = ['id', 'pdf_file', 'title', 'films', 'created_at']
+
+    # def get_detail_films(self, obj):
+    #     return [film.public_id for film in obj.films.all()]
 
     def get_films(self, obj):
-        return [film.public_id for film in obj.films.all()]
+        return obj.films.count()
 
     def extract_links_from_pdf(self, pdf_path):
         document = fitz.open(pdf_path)

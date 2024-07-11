@@ -54,7 +54,7 @@ export function DashboardNavbar() {
               <Typography
                 variant="small"
                 color="blue-gray"
-                className="font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100"
+                className="font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100 uppercase"
               >
                 {layout}
               </Typography>
@@ -62,12 +62,12 @@ export function DashboardNavbar() {
             <Typography
               variant="small"
               color="blue-gray"
-              className="font-normal"
+              className="font-normal uppercase"
             >
               {page}
             </Typography>
           </Breadcrumbs>
-          <Typography variant="h6" color="blue-gray">
+          <Typography variant="h6" color="blue-gray" className="uppercase">
             {page}
           </Typography>
         </div>

@@ -14,6 +14,7 @@ class Film(AbstractModel):
     season = models.CharField(max_length=255, default='')
     status = models.CharField(max_length=255, default='')
     link = models.CharField(max_length=255, default='')
+    need_scrape = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.link}"

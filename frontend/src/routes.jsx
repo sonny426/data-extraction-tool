@@ -5,9 +5,10 @@ import {
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
-  DocumentIcon
+  DocumentIcon,
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications, PDF } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications, PDF, Extract } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -29,6 +30,12 @@ export const routes = [
         name: "PDF",
         path: "/pdf",
         element: <PDF />,
+      },
+      {
+        icon: <ArrowDownTrayIcon {...icon} />,
+        name: "Data Extract",
+        path: "/extract",
+        element: <Extract />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
