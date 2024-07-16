@@ -8,26 +8,31 @@ import {
   Input,
 } from "@material-tailwind/react";
 import axiosInstance from "@/utils/axios";
+import { Pagination } from "antd";
 
 export function Films() {
   const [loading, setLoading] = useState(false);
   const [films, setFilms] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(100);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("films");
+      const response = await axiosInstance.get(`films/?limit=${pageSize}&offset=${(page - 1) * pageSize}`);
       setFilms(response.data.results);
+      setTotal(response.data.count);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
-  };
+  }, [page, pageSize]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   console.log(films)
 
@@ -63,7 +68,7 @@ export function Films() {
                 Array.from({ length: 10 }).map((_, index) => (
                   <tr key={index}>
                     {
-                      Array.from({ length: 5 }).map((_, index2) => (
+                      Array.from({ length: 9 }).map((_, index2) => (
                         <td key={'td' + index2}>
                           <Typography
                             as="div"
@@ -82,13 +87,13 @@ export function Films() {
                   <tr key={film.id}>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {key + 1}
+                        {pageSize * (page - 1) + key + 1}
                       </Typography>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <Typography
                         variant="small"
-                        className="font-semibold"
+                        className="text-xs font-semibold text-blue-gray-600"
                       >
                         {film.title}
                       </Typography>
@@ -135,6 +140,23 @@ export function Films() {
               )}
             </tbody>
           </table>
+          <div className="my-3 w-full flex justify-center text-xs font-semibold text-blue-gray-600">
+            <Pagination
+              total={total}
+              current={page}
+              pageSize={pageSize}
+              pageSizeOptions={[
+                100, 200, 500, 1000, 5000, 10000, 100000, 1000000,
+              ]}
+              showSizeChanger
+              showQuickJumper
+              showTotal={(total) => `Total ${total} items`}
+              onChange={(page, pageSize) => {
+                setPage(page);
+                setPageSize(pageSize);
+              }}
+            />
+          </div>
         </CardBody>
       </Card>
     </div>
