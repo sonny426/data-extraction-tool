@@ -13,25 +13,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Film',
+            name='Company',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('public_id', models.UUIDField(db_index=True, default=uuid.uuid4, editable=False, unique=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('title', models.CharField(default='', max_length=255)),
-                ('studio', models.CharField(default='', max_length=255)),
-                ('genre', models.CharField(default='', max_length=255)),
-                ('arena', models.CharField(default='', max_length=255)),
-                ('modified_at', models.DateTimeField(null=True)),
-                ('season', models.CharField(default='', max_length=255)),
-                ('status', models.CharField(default='', max_length=255)),
-                ('link', models.CharField(default='', max_length=255)),
-                ('network', models.CharField(default='', max_length=255)),
+                ('name', models.CharField(default='', max_length=255)),
+                ('territory', models.CharField(default='', max_length=255)),
+                ('schedule', models.CharField(default='', max_length=255)),
                 ('need_scrape', models.BooleanField(default=True)),
             ],
             options={
-                'db_table': 'films',
+                'db_table': 'companies',
             },
         ),
     ]

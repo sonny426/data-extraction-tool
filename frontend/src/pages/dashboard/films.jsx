@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import axiosInstance from "@/utils/axios";
 import { Pagination } from "antd";
+import moment from "moment";
 
 export function Films() {
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ export function Films() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["no", "title", "studio", "genre", "arena", "modified at", "season", "status", "link"].map((el) => (
+                {["no", "title", "studio", "genre", "arena", "modified at", "season", "status", "network", "link"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -115,7 +116,7 @@ export function Films() {
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.modified_at}
+                        {moment(film.modified_at).format("MM-DD-YYYY")}
                       </Typography>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -126,6 +127,11 @@ export function Films() {
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
                         {film.status}
+                      </Typography>
+                    </td>
+                    <td className="py-3 px-5 border-b border-blue-gray-50">
+                      <Typography className="text-xs font-semibold text-blue-gray-600">
+                        {film.network}
                       </Typography>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">

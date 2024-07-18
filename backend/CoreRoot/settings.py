@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'core.auth',
     'core.film',
     'core.pdf',
+    'core.company',
 ]
 
 MIDDLEWARE = [

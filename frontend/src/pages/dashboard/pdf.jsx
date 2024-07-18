@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
   Input,
+  Switch,
 } from "@material-tailwind/react";
 import moment from "moment";
 import axiosInstance from "@/utils/axios";
@@ -17,6 +18,7 @@ export function PDF() {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [error, setError] = useState(null);
+  const [recollect, setRecollect] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -54,6 +56,7 @@ export function PDF() {
     const formData = new FormData();
     formData.append("pdf_file", file);
     formData.append("title", title);
+    formData.append("recollect", recollect);
     setLoading(true);
     try {
       const newPDF = await axiosInstance.post("pdfs/", formData, {
@@ -169,7 +172,7 @@ export function PDF() {
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {new moment(pdf.created_at).format('YYYY-MM-DD hh:mm:ss')}
+                        {new moment(pdf.created_at).format('MM-DD-YYYY hh:mm:ss')}
                       </Typography>
                     </td>
                   </tr>
@@ -201,6 +204,28 @@ export function PDF() {
             className="mt-2"
             value={file ? file.filename : ''}
             error={error?.file?.length > 0}
+          />
+          <Switch
+            label={
+              <div className="mt-4">
+                <Typography color="blue-gray" className="font-medium">
+                  Recollect data
+                </Typography>
+                <Typography variant="small" color="gray" className="font-normal">
+                  {
+                    recollect ?
+                      "This will gather data again even if already contains data." :
+                      "This will skip recollecting the data and it will be updated soon."
+                  }
+                </Typography>
+              </div>
+            }
+            color="green"
+            containerProps={{
+              className: "mt-5",
+            }}
+            onChange={e => setRecollect(e.target.checked)}
+            value={recollect}
           />
           <div className="flex justify-center mt-6">
             <Button variant="gradient" color="cyan" onClick={() => handleSubmitPDF(true)} className="mx-4 flex items-center gap-3">

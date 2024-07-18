@@ -49,6 +49,7 @@ class PDFSerializer(AbstractSerializer):
             if film is None:
                 film = Film(link=film_link)
                 film.save()
+            film.need_scrape = pdf.recollect
             new_films.append(film)
         pdf.films.set(new_films)
         return pdf
