@@ -7,9 +7,10 @@ import {
   RectangleStackIcon,
   DocumentIcon,
   FilmIcon,
-  FingerPrintIcon
+  FingerPrintIcon,
+  PrinterIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications, PDF, Films, Cookie } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications, PDF, Films, Cookie, TaskLog } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -43,6 +44,12 @@ export const routes = [
         name: "Cookie",
         path: "/cookie",
         element: <Cookie />,
+      },
+      {
+        icon: <PrinterIcon {...icon} />,
+        name: "Task Logs",
+        path: "/task-logs",
+        element: <TaskLog />,
       },
       // {
       //   icon: <UserCircleIcon {...icon} />,

@@ -13,7 +13,7 @@ class FilmViewSet(AbstractViewSet):
     serializer_class = FilmSerializer
 
     def get_queryset(self):
-        return Film.objects.all()
+        return Film.objects.filter(need_scrape=False)
 
     def get_object(self):
         return Film.objects.get_object_by_public_id(self.kwargs['pk'])

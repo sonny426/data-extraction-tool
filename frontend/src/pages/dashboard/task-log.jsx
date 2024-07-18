@@ -6,14 +6,16 @@ import {
   Typography,
   Button,
   Input,
+  Chip,
 } from "@material-tailwind/react";
 import axiosInstance from "@/utils/axios";
 import { Pagination } from "antd";
 import moment from "moment";
 
-export function Films() {
+export function TaskLog() {
   const [loading, setLoading] = useState(false);
-  const [films, setFilms] = useState([]);
+  const [error, setError] = useState(null);
+  const [histories, setHistories] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -21,8 +23,8 @@ export function Films() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get(`films/?limit=${pageSize}&offset=${(page - 1) * pageSize}`);
-      setFilms(response.data.results);
+      const response = await axiosInstance.get(`task-logs/?limit=${pageSize}&offset=${(page - 1) * pageSize}`);
+      setHistories(response.data.results);
       setTotal(response.data.count);
       setLoading(false);
     } catch (error) {
@@ -35,21 +37,30 @@ export function Films() {
     fetchData();
   }, [fetchData]);
 
-  console.log(films)
+  useEffect(() => {
+    if (error) {
+      notification["error"]({
+        message: "Error",
+        description: JSON.stringify(error),
+        showProgress: true,
+        pauseOnHover: true,
+      });
+    }
+  }, [error]);
 
   return (
-    <div className="mt-12 mb-8 grid gap-12">
+    <div className="mt-12 mb-8">
       <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">
-            Films
+            Scraping History
           </Typography>
         </CardHeader>
-        <CardBody className="px-5 pt-0 pb-2">
+        <CardBody className="px-58 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["no", "title", "studio", "genre", "arena", "modified at", "season", "status", "network", "link"].map((el) => (
+                {["no", "scrape link", "status", "result", "started at"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -66,7 +77,7 @@ export function Films() {
             </thead>
             <tbody>
               {loading ? (
-                Array.from({ length: 10 }).map((_, index) => (
+                Array.from({ length: 5 }).map((_, index) => (
                   <tr key={index}>
                     {
                       Array.from({ length: 9 }).map((_, index2) => (
@@ -84,8 +95,8 @@ export function Films() {
                   </tr>
                 ))
               ) : (
-                films.map((film, key) => (
-                  <tr key={film.id}>
+                histories.map((history, key) => (
+                  <tr key={history.id}>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
                         {pageSize * (page - 1) + key + 1}
@@ -96,49 +107,24 @@ export function Films() {
                         variant="small"
                         className="text-xs font-semibold text-blue-gray-600"
                       >
-                        {film.title}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.studio}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.genre}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.arena}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {moment(film.modified_at).format("MM-DD-YYYY")}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.season}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.status}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.network}
-                      </Typography>
-                    </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        <a href={film.link} target="_blank" className="text-blue-600" rel="noreferrer">
+                        <a href={history.scrape_link} target="_blank" className="text-blue-600" rel="noreferrer">
                           Link
                         </a>
+                      </Typography>
+                    </td>
+                    <td className="py-3 px-5 border-b border-blue-gray-50">
+                      <Typography className="text-xs font-semibold text-blue-gray-600">
+                        {history.status === "STARTED" ? <Chip color="cyan" value="STARTED" /> : history.status === "FAILURE" ? <Chip color="red" value="FAILURE" /> : history.status === "SUCCESS" ? <Chip color="green" value="SUCCESS" /> : <Chip color="purple" value={history.status} />}
+                      </Typography>
+                    </td>
+                    <td className="py-3 px-5 border-b border-blue-gray-50">
+                      <Typography className="text-xs font-semibold text-blue-gray-600">
+                        {history.result}
+                      </Typography>
+                    </td>
+                    <td className="py-3 px-5 border-b border-blue-gray-50">
+                      <Typography className="text-xs font-semibold text-blue-gray-600">
+                        {moment(history.created_at).format("MM-DD-YYYY hh:mm:ss")}
                       </Typography>
                     </td>
                   </tr>
@@ -169,4 +155,4 @@ export function Films() {
   );
 }
 
-export default Films;
+export default TaskLog;

@@ -7,6 +7,7 @@ from core.auth.viewsets import RefreshViewSet
 from core.film.viewsets import FilmViewSet
 from core.pdf.viewsets import PDFViewSet
 from core.cookie.viewsets import CookieViewSet
+from core.task_log.viewsets import TaskLogViewSet
 
 router = routers.SimpleRouter()
 
@@ -17,6 +18,7 @@ router.register(r'auth/refresh', RefreshViewSet, basename='auth-refresh')
 router.register(r'films', FilmViewSet, basename='film')
 router.register(r'pdfs', PDFViewSet, basename='pdf')
 router.register(r'cookies', CookieViewSet, basename='cookie')
+router.register(r'task-logs', TaskLogViewSet, basename='task-logs')
 
 urlpatterns = [
     *router.urls,

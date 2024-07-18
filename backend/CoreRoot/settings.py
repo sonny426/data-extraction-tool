@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'core.pdf',
     'core.company',
     'core.cookie',
+    'core.task_log',
 ]
 
 MIDDLEWARE = [

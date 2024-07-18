@@ -5,3 +5,4 @@ export * from "@/pages/dashboard/notifications";
 export * from "@/pages/dashboard/pdf";
 export * from "@/pages/dashboard/films";
 export * from "@/pages/dashboard/cookie";
+export * from "@/pages/dashboard/task-log";
