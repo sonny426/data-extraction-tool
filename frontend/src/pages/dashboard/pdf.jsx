@@ -11,6 +11,7 @@ import {
 import moment from "moment";
 import axiosInstance from "@/utils/axios";
 import { notification } from "antd";
+import { Link } from 'react-router-dom'
 
 export function PDF() {
   const [loading, setLoading] = useState(false);
@@ -107,7 +108,7 @@ export function PDF() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["no", "title", "Films", "Source", "Uploaded At"].map((el) => (
+                {["no", "title", "Films", "Source", "Show Films", "Uploaded At"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -127,7 +128,7 @@ export function PDF() {
                 Array.from({ length: 10 }).map((_, index) => (
                   <tr key={index}>
                     {
-                      Array.from({ length: 5 }).map((_, index2) => (
+                      Array.from({ length: 6 }).map((_, index2) => (
                         <td key={'td' + index2}>
                           <Typography
                             as="div"
@@ -168,6 +169,13 @@ export function PDF() {
                         <a href={pdf.pdf_file} target="_blank" className="text-blue-600" rel="noreferrer">
                           Link
                         </a>
+                      </Typography>
+                    </td>
+                    <td className="py-3 px-5 border-b border-blue-gray-50">
+                      <Typography className="text-xs font-semibold text-blue-gray-600">
+                        <Link to={`/dashboard/films?source=${pdf.id}`} className="text-blue-600">
+                          Here
+                        </Link>
                       </Typography>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -248,7 +256,7 @@ export function PDF() {
           </div>
         </CardBody>
       </Card>
-    </div>
+    </div >
   );
 }
 

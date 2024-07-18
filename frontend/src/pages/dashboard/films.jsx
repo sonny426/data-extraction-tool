@@ -10,6 +10,7 @@ import {
 import axiosInstance from "@/utils/axios";
 import { Pagination } from "antd";
 import moment from "moment";
+import { CloudArrowDownIcon } from "@heroicons/react/24/solid";
 
 export function Films() {
   const [loading, setLoading] = useState(false);
@@ -18,13 +19,43 @@ export function Films() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
 
+  const downloadCSV = () => {
+    // Prepare CSV content
+    const csvContent = "data:text/csv;charset=utf-8," + films.map(row => "\"" + Object.values(row).join('\",\"') + "\"").join('\n');
+
+    // Create a link element, set its href attribute to the CSV content
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "search_results.csv");
+
+    // Append the link to the body
+    document.body.appendChild(link);
+
+    // Click the link programmatically to trigger the download
+    link.click();
+
+    // Clean up: remove the link from the DOM
+    document.body.removeChild(link);
+  };
+
   const fetchData = useCallback(async () => {
     setLoading(true);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
     try {
-      const response = await axiosInstance.get(`films/?limit=${pageSize}&offset=${(page - 1) * pageSize}`);
-      setFilms(response.data.results);
-      setTotal(response.data.count);
-      setLoading(false);
+      const source = urlParams.get('source');
+      if (source) {
+        const response = await axiosInstance.get(`films/?limit=${pageSize}&offset=${(page - 1) * pageSize}&source=${source}`);
+        setFilms(response.data.results);
+        setTotal(response.data.count);
+        setLoading(false);
+      } else {
+        const response = await axiosInstance.get(`films/?limit=${pageSize}&offset=${(page - 1) * pageSize}`);
+        setFilms(response.data.results);
+        setTotal(response.data.count);
+        setLoading(false);
+      }
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -35,10 +66,14 @@ export function Films() {
     fetchData();
   }, [fetchData]);
 
-  console.log(films)
-
   return (
     <div className="mt-12 mb-8 grid gap-12">
+      <div className="flex justify-center">
+        <Button variant="gradient" color="cyan" onClick={downloadCSV} className="mx-4 flex items-center gap-3">
+          <CloudArrowDownIcon className="w-5 h-5 text-inherit" />
+          Download
+        </Button>
+      </div>
       <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">

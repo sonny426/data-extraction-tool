@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 
 from core.abstract.viewsets import AbstractViewSet
 from core.film.models import Film
+from core.pdf.models import PDF
 from core.film.serializers import FilmSerializer
 
 class FilmViewSet(AbstractViewSet):
@@ -13,7 +14,12 @@ class FilmViewSet(AbstractViewSet):
     serializer_class = FilmSerializer
 
     def get_queryset(self):
-        return Film.objects.filter(need_scrape=False)
+        source = self.request.query_params.get('source')
+        if source:
+            films = PDF.objects.get_object_by_public_id(source).films.filter(need_scrape=False)
+        else:
+            films = Film.objects.filter(need_scrape=False)
+        return films
 
     def get_object(self):
         return Film.objects.get_object_by_public_id(self.kwargs['pk'])
