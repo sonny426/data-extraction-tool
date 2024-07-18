@@ -58,15 +58,15 @@ export function Cookie() {
   }
 
   return (
-    <div className="mt-12 mb-8 grid grid-cols-12 gap-12">
-      <Card className="col-span-8">
+    <div className="mt-12 mb-8">
+      <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">
             Cookie
           </Typography>
         </CardHeader>
         <CardBody className="px-5 pt-0 pb-2">
-          <Textarea label="Cookie" value={data} onChange={e => setData(e.target.value)} variant="standard" rows={25} />
+          <Textarea label="Cookie" value={data} onChange={e => setData(e.target.value)} variant="standard" rows={20} />
           <div className="flex justify-center">
             <Button color="blue" onClick={handleSave}>Save</Button>
           </div>
