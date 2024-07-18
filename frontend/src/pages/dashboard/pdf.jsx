@@ -205,7 +205,7 @@ export function PDF() {
             value={file ? file.filename : ''}
             error={error?.file?.length > 0}
           />
-          <Switch
+          {/* <Switch
             label={
               <div className="mt-4">
                 <Typography color="blue-gray" className="font-medium">
@@ -226,7 +226,7 @@ export function PDF() {
             }}
             onChange={e => setRecollect(e.target.checked)}
             value={recollect}
-          />
+          /> */}
           <div className="flex justify-center mt-6">
             <Button variant="gradient" color="cyan" onClick={() => handleSubmitPDF(true)} className="mx-4 flex items-center gap-3">
               <svg
