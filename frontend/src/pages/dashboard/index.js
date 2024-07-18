@@ -4,3 +4,4 @@ export * from "@/pages/dashboard/tables";
 export * from "@/pages/dashboard/notifications";
 export * from "@/pages/dashboard/pdf";
 export * from "@/pages/dashboard/films";
+export * from "@/pages/dashboard/cookie";

@@ -7,8 +7,9 @@ import {
   RectangleStackIcon,
   DocumentIcon,
   FilmIcon,
+  FingerPrintIcon
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications, PDF, Films } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications, PDF, Films, Cookie } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -36,6 +37,12 @@ export const routes = [
         name: "Films",
         path: "/films",
         element: <Films />,
+      },
+      {
+        icon: <FingerPrintIcon {...icon} />,
+        name: "Cookie",
+        path: "/cookie",
+        element: <Cookie />,
       },
       // {
       //   icon: <UserCircleIcon {...icon} />,

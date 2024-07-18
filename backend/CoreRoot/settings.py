@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'core.film',
     'core.pdf',
     'core.company',
+    'core.cookie',
 ]
 
 MIDDLEWARE = [
