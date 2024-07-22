@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: >
+      sh -c "python manage.py migrate && gunicorn CoreRoot.wsgi:application --bind 0.0.0.0:8000"
+    depends_on:
+      wait-for-redis:
+        condition: service_completed_successfully
+      wait-for-postgres:
+        condition: service_completed_successfully
+
+  wait-for-postgres:
+    image: atkrad/wait4x
+    depends_on:
+      - postgres
+    command: tcp postgres:5432 -t 300s -i 250ms
+
+  wait-for-redis:
+    image: atkrad/wait4x
+    depends_on:
+      - redis
+    command: tcp redis:6379 -t 300s -i 250ms
+
+  postgres:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: data_extraction_tool
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123123
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+
+  celery-worker:
+    build: ./backend
+    command: celery -A CoreRoot worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+
+  celery-beat:
+    build: ./backend
+    command: celery -A CoreRoot beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
