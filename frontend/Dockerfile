@@ -26,7 +26,7 @@ COPY --from=0 /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80 to the outside world
-EXPOSE 80
+EXPOSE 8001
 
 # Command to run the Nginx server
 CMD ["nginx", "-g", "daemon off;"]
