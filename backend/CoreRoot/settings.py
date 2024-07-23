@@ -107,6 +107,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'CoreRoot.urls'
 
+DATA_UPLOAD_MAX_MEMORY_SIZE=200*1024*1024
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
