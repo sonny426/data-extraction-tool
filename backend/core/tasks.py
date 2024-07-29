@@ -115,7 +115,7 @@ def check_and_update_films():
                     _NETWORK += '(iv). '
                 if index == 4:
                     _NETWORK += '(v). '
-                _NETWORK += COMPANY + ' | ' + NETWORK[1] + ' | ' + NETWORK[2]
+                _NETWORK += COMPANY + ' | ' + NETWORK[1] + ' | ' + NETWORK[2] + ' '
 
                 if index == 0:
                     if NETWORK[3][0] >= '0' and NETWORK[3][0] <= '9':

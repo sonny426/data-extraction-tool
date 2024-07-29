@@ -6,15 +6,15 @@ class FilmManager(AbstractManager):
     pass
 
 class Film(AbstractModel):
-    title = models.CharField(max_length=255, default='')
-    studio = models.CharField(max_length=255, default='')
-    genre = models.CharField(max_length=255, default='')
-    arena = models.CharField(max_length=255, default='')
+    title = models.CharField(max_length=512, default='')
+    studio = models.CharField(max_length=512, default='')
+    genre = models.CharField(max_length=512, default='')
+    arena = models.CharField(max_length=512, default='')
     modified_at = models.DateTimeField(null=True)
-    season = models.CharField(max_length=255, default='')
-    status = models.CharField(max_length=255, default='')
-    link = models.CharField(max_length=255, default='')
-    network = models.CharField(max_length=255, default='')
+    season = models.CharField(max_length=512, default='')
+    status = models.CharField(max_length=512, default='')
+    link = models.CharField(max_length=512, default='')
+    network = models.CharField(max_length=512, default='')
     need_scrape = models.BooleanField(default=True)
 
     def __str__(self):
