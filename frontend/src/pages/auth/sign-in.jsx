@@ -5,13 +5,40 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { notification } from "antd";
+import axiosInstance from "@/utils/axios";
+import { useNavigate } from "react-router-dom";
 
+export function SignIn(props) {
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
 
-export function SignIn() {
+  const loginHandle = () => {
+    axiosInstance.post("/auth/login/", data)
+      .then(res => {
+        console.log(res)
+        localStorage.setItem("auth", JSON.stringify({
+          access: res.data.access,
+          refresh: res.data.refresh,
+          user: res.data.user,
+        }));
+        navigate("/")
+      })
+      .catch(err => {
+        console.log(err)
+        notification["error"]({
+          description: JSON.stringify(err)
+        })
+      })
+  }
+
   return (
     <section className="m-8 flex gap-4">
-      <div className="w-full lg:w-3/5 mt-24">
+      <div className="w-full mt-32">
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">Sign In</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to Sign In.</Typography>
@@ -28,6 +55,7 @@ export function SignIn() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              onChange={e => setData({ ...data, email: e.target.value })}
             />
             <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
               Password
@@ -40,9 +68,10 @@ export function SignIn() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              onChange={e => setData({ ...data, password: e.target.value })}
             />
           </div>
-          <Checkbox
+          {/* <Checkbox
             label={
               <Typography
                 variant="small"
@@ -59,12 +88,12 @@ export function SignIn() {
               </Typography>
             }
             containerProps={{ className: "-ml-2.5" }}
-          />
-          <Button className="mt-6" fullWidth>
+          /> */}
+          <Button className="mt-6" fullWidth onClick={loginHandle}>
             Sign In
           </Button>
 
-          <div className="flex items-center justify-between gap-2 mt-6">
+          {/* <div className="flex items-center justify-between gap-2 mt-6">
             <Checkbox
               label={
                 <Typography
@@ -108,15 +137,9 @@ export function SignIn() {
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Not registered?
             <Link to="/auth/sign-up" className="text-gray-900 ml-1">Create account</Link>
-          </Typography>
+          </Typography> */}
         </form>
 
-      </div>
-      <div className="w-2/5 h-full hidden lg:block">
-        <img
-          src="/img/pattern.png"
-          className="h-full w-full object-cover rounded-3xl"
-        />
       </div>
 
     </section>

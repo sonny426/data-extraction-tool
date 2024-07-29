@@ -105,13 +105,23 @@ def check_and_update_films():
                 response = MyRequest(link)
                 soup = BeautifulSoup(response, 'html.parser')
                 COMPANY = soup.find('div', {'class': 'new-header-wrap-2'}).find('h1').text.strip()
+                if index == 0:
+                    _NETWORK += '(i). '
+                if index == 1:
+                    _NETWORK += '(ii). '
+                if index == 2:
+                    _NETWORK += '(iii). '
+                if index == 3:
+                    _NETWORK += '(iv). '
+                if index == 4:
+                    _NETWORK += '(v). '
                 _NETWORK += COMPANY + ' | ' + NETWORK[1] + ' | ' + NETWORK[2]
 
                 if index == 0:
                     if NETWORK[3][0] >= '0' and NETWORK[3][0] <= '9':
-                        _NETWORK += ' | ' + NETWORK[3]
+                        _NETWORK += ' | ' + NETWORK[3] + '. '
                     else:
-                        _NETWORK += '.'
+                        _NETWORK += '. '
             except:
                 continue
     except:
