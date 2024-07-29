@@ -31,7 +31,7 @@ export function SignIn(props) {
       .catch(err => {
         console.log(err)
         notification["error"]({
-          description: JSON.stringify(err)
+          description: JSON.stringify(err.response.data)
         })
       })
   }
