@@ -18,10 +18,21 @@ export function Films() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
+  const [maxNetworks, setMaxNetworks] = useState(1);
+  const [headers, setHeaders] = useState([]);
 
   const downloadCSV = () => {
     // Prepare CSV content
-    const csvContent = "data:text/csv;charset=utf-8," + films.map(row => "\"" + Object.values(row).join('\",\"') + "\"").join('\n');
+    const csvContent = "data:text/csv;charset=utf-8," + films.map(row => {
+      const fieldsToRemove = ['id', 'need_scrape', 'network', 'networks', 'created_at', 'updated_at', 'link'];
+      Array.from({ length: maxNetworks }).forEach((_, index) => {
+        row[`networks${index}`] = index < row.networks.length ? row.networks[index] : ''
+      })
+      row = Object.fromEntries(
+        Object.entries(row).filter(([key]) => !fieldsToRemove.includes(key))
+      );
+      return "\"" + Object.values(row).join('\",\"') + "\""
+    }).join('\n');
 
     // Create a link element, set its href attribute to the CSV content
     const encodedUri = encodeURI(csvContent);
@@ -39,6 +50,21 @@ export function Films() {
     document.body.removeChild(link);
   };
 
+  const updateNetwork = (data) => {
+    let ret = []
+    let maxLength = 0;
+    data.forEach(film => {
+      const pattern = /\((i{1,3}|iv|v)\)\.\s*/;
+      const result = film.network.split(pattern).filter(item => item.trim() !== '' && !/^(i{1,3}|iv|v)$/.test(item.trim())).map(item => item.trim());
+      ret.push({
+        ...film,
+        networks: result
+      });
+      maxLength = Math.max(maxLength, result.length)
+    });
+    return { data: ret, maxNetwork: maxLength };
+  }
+
   const fetchData = useCallback(async () => {
     setLoading(true);
     const queryString = window.location.search;
@@ -47,14 +73,30 @@ export function Films() {
       const source = urlParams.get('source');
       if (source) {
         const response = await axiosInstance.get(`films/?limit=${pageSize}&offset=${(page - 1) * pageSize}&source=${source}`);
-        setFilms(response.data.results);
+        const { data, maxNetwork } = updateNetwork(response.data.results);
+        setMaxNetworks(maxNetwork);
+        setFilms(data);
         setTotal(response.data.count);
         setLoading(false);
+        let headers_ = ["no", "title", "studio", "genre", "arena", "modified at", "season", "status"];
+        for (let i = 1; i <= maxNetwork; i++) {
+          headers_.push(`network${i}`);
+        }
+        headers_.push("link");
+        setHeaders(headers_)
       } else {
         const response = await axiosInstance.get(`films/?limit=${pageSize}&offset=${(page - 1) * pageSize}`);
-        setFilms(response.data.results);
+        const { data, maxNetwork } = updateNetwork(response.data.results);
+        setMaxNetworks(maxNetwork);
+        setFilms(data);
         setTotal(response.data.count);
         setLoading(false);
+        let headers_ = ["no", "title", "studio", "genre", "arena", "modified at", "season", "status"];
+        for (let i = 1; i <= maxNetwork; i++) {
+          headers_.push(`network${i}`);
+        }
+        headers_.push("link");
+        setHeaders(headers_)
       }
     } catch (error) {
       setLoading(false);
@@ -84,7 +126,7 @@ export function Films() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["no", "title", "studio", "genre", "arena", "modified at", "season", "status", "network", "link"].map((el) => (
+                {headers.map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -164,11 +206,15 @@ export function Films() {
                         {film.status}
                       </Typography>
                     </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {film.network}
-                      </Typography>
-                    </td>
+                    {
+                      Array.from({ length: maxNetworks }).map((network, index) => (
+                        <td className="py-3 px-5 border-b border-blue-gray-50" key={`${film.id}${index}`}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {index < film.networks.length ? film.networks[index] : ''}
+                          </Typography>
+                        </td>
+                      ))
+                    }
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
                         <a href={film.link} target="_blank" className="text-blue-600" rel="noreferrer">
